@@ -23,6 +23,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="@string/send_otp"/>
+    <ProgressBar
+        android:layout_gravity="center"
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
     <EditText
         android:id="@+id/editTextOtp"
         android:layout_width="match_parent"

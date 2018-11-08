@@ -1,5 +1,6 @@
 package com.durga.balaji66.phoneauthenticationusingfirebase;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText mPhone;
     private Button mSendOTP;
-    private ProgressBar progressBar;
+    public ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private String verificationId;
     private EditText mOTP;
@@ -34,16 +36,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
         initializeViews();
+        progressBar.setVisibility(View.GONE);
         initializeListeners();
         initializeObjects();
 
     }
-
     public void initializeViews() {
         mPhone=findViewById(R.id.editTextPhoneNumber);
         mSendOTP =findViewById(R.id.buttonSendOtp);
         mOTP =findViewById(R.id.editTextOtp);
+        progressBar = findViewById(R.id.progressbar);
     }
     public void initializeListeners()
     {
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void sendVerificationCode(String number) {
         progressBar.setVisibility(View.VISIBLE);
+        mPhone.setVisibility(View.GONE);
+        mSendOTP.setVisibility(View.GONE);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(number, 60, TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
                 mCallBack
@@ -112,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             progressBar.setVisibility(View.GONE);
+                            Intent intent =new Intent(MainActivity.this,HomeActivity.class);
+                            startActivity(intent);
                             Toast.makeText(getApplicationContext(), "Otp Verified Successfully", Toast.LENGTH_LONG).show();
 
                         } else {
