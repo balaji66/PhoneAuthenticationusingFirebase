@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Phone Authentication using Firebase</string>
+    <string name="send_otp">Send OTP</string>
+</resources>
